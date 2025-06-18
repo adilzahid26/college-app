@@ -1,9 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask
 from flask_cors import CORS
+from auth import auth_bp
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route("/hello")
-def hello():
-    return jsonify(message="This message is from backend")
+app.register_blueprint(auth_bp, url_prefix='/auth')
+
+if __name__ == '__main__':
+    # Debug mode ON, but reloader OFF to avoid silent crashes
+    app.run(debug=True, use_reloader=False)
