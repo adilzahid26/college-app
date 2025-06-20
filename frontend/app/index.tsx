@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useAuth } from './_layout';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -19,7 +21,8 @@ export default function LoginScreen() {
       const data = await response.json();
 
       if (response.ok) {
-        window.location.href = '/BioScreen';
+        login();
+        router.replace('/BioScreen');
       } else {
         setErrorMsg(data.message || 'Login failed');
       }

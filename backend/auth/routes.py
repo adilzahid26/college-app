@@ -42,8 +42,8 @@ def login():
 def register():
     try:
         data = request.json
-        firstName = data.get('first_name')
-        lastName = data.get('last_name')
+        firstName = data.get('firstName')
+        lastName = data.get('lastName')
         email = data.get('email')
         password = data.get('password')
 
