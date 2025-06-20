@@ -1,14 +1,17 @@
 from flask import Blueprint, request, jsonify
+import os
 import MySQLdb
+from dotenv import load_dotenv
 
+load_dotenv()
 auth_bp = Blueprint('auth', __name__)
 
 def get_db_connection():
     return MySQLdb.connect(
-        host='localhost',
-        user='root',
-        password='Az331684$',
-        database='college_app',
+        host=os.getenv('DB_HOST'),
+        user=os.getenv('DB_USER'),
+        password=os.getenv('DB_PASSWORD'),
+        database=os.getenv('DB_NAME'),
     )
 
 @auth_bp.route('/login', methods=['POST'])
