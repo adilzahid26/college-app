@@ -8,36 +8,49 @@ export default function RegisterScreen() {
   const { login } = useAuth();
 
   const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName]   = useState('');
-  const [email, setEmail]         = useState('');
-  const [password, setPassword]   = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleRegister = async () => {
-    console.log(lastName)
     if (!firstName || !lastName || !email || !password) {
       setErrorMsg("All fields are required!");
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
+      const registerResponse = await fetch('http://localhost:5000/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ firstName, lastName, email, password }),
       });
 
-      const data = await response.json();
+      const registerData = await registerResponse.json();
 
-      if (response.ok) {
-        login();
+      if (!registerResponse.ok) {
+        setErrorMsg(registerData.message || 'Registration failed');
+        return;
+      }
+
+      const loginResponse = await fetch('http://localhost:5000/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+      });
+
+      const loginData = await loginResponse.json();
+
+      if (loginResponse.ok) {
+        login(loginData.user);
         router.replace('/BioScreen');
       } else {
-        setErrorMsg(data.message || 'Registration failed');
+        setErrorMsg(loginData.message || 'Login after registration failed');
       }
     } catch (err) {
       setErrorMsg('Something went wrong');
-    }    
+    }
   };
 
   return (

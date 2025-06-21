@@ -6,6 +6,7 @@ import { useAuth } from './_layout';
 export default function LoginScreen() {
   const router = useRouter();
   const { login } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
@@ -16,12 +17,13 @@ export default function LoginScreen() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include',
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        login();
+        login(data.user);
         router.replace('/BioScreen');
       } else {
         setErrorMsg(data.message || 'Login failed');
