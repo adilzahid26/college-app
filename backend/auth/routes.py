@@ -68,16 +68,10 @@ def login():
 
         if user and user['password'] == password:
             session['user_id'] = user['id']
-            session['email'] = user['email']
-            session['first_name'] = user['first_name']
-            session['last_name'] = user['last_name']
             return jsonify({
                 "message": "Login successful",
                 "user": {
-                    "id": user['id'],
-                    "email": user['email'],
-                    "firstName": user['first_name'],
-                    "lastName": user['last_name']
+                    "id": user['id']
                 }
             })
         elif user:
@@ -102,10 +96,7 @@ def current_user():
     if 'user_id' in session:
         return jsonify({
             "user": {
-                "id": session['user_id'],
-                "email": session['email'],
-                "firstName": session['first_name'],
-                "lastName": session['last_name']
+                "id": session['user_id']
             }
         })
     else:
