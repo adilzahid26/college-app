@@ -84,6 +84,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
+  screenTitle: {
+  fontSize: 32,
+  fontWeight: 'bold',
+  marginBottom: 25,
+  color: 'black',
+  textAlign: 'center',
+  },
 });
 
 export default styles;

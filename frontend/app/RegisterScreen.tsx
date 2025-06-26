@@ -64,6 +64,7 @@ export default function RegisterScreen() {
     <View style={styles.outerContainer}>
       <View style={styles.overlay}>
         <View style={styles.container}>
+          <Text style={styles.screenTitle}>Create Account</Text>
           <TextInput
             placeholder="First Name"
             value={firstName}
