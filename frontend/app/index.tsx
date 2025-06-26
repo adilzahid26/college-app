@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, TouchableOpacity } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from './_layout';
+import styles from './styles';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -10,6 +11,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async () => {
     try {
@@ -34,28 +36,58 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        style={{ marginBottom: 10, borderWidth: 1, padding: 8 }}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        autoCapitalize="none"
-        style={{ marginBottom: 10, borderWidth: 1, padding: 8 }}
-      />
-      <Button title="Submit" onPress={handleSubmit} />
-      {errorMsg ? <Text style={{ color: 'red', marginTop: 10 }}>{errorMsg}</Text> : null}
-      <TouchableOpacity onPress={() => router.push('/RegisterScreen')} style={{ marginTop: 20 }}>
-        <Text style={{ color: 'blue' }}>Register</Text>
-      </TouchableOpacity>
+    <View style={styles.outerContainer}>
+      <View style={styles.overlay}>
+        <View style={styles.container}>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.logo}
+          />
+
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={styles.input}
+          />
+
+          <View style={styles.passwordContainer}>
+            <TextInput
+              placeholder="Password"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              autoCapitalize="none"
+              style={styles.passwordInput}
+            />
+            <TouchableOpacity onPress={() => setShowPassword(prev => !prev)}>
+              <Text style={styles.showHideButton}>
+                {showPassword ? 'Hide' : 'Show'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style={styles.loginButton} onPress={handleSubmit}>
+            <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+
+          {errorMsg ? (
+            <Text style={styles.errorText}>{errorMsg}</Text>
+          ) : null}
+
+          <Text style={styles.registerPrompt}>
+            New user?{' '}
+            <Text
+              style={styles.registerLink}
+              onPress={() => router.push('/RegisterScreen')}
+            >
+              Create account
+            </Text>
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }

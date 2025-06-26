@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from './_layout';
+import styles from './styles';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -11,11 +12,17 @@ export default function RegisterScreen() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleRegister = async () => {
-    if (!firstName || !lastName || !email || !password) {
-      setErrorMsg("All fields are required!");
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setErrorMsg('All fields are required!');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMsg('Passwords do not match!');
       return;
     }
 
@@ -54,42 +61,58 @@ export default function RegisterScreen() {
   };
 
   return (
-    <View style={{ padding: 20 }}>
-      <TextInput
-        placeholder="First Name"
-        value={firstName}
-        onChangeText={setFirstName}
-        style={{ marginBottom: 10, borderWidth: 1, padding: 8 }}
-      />
-      <TextInput
-        placeholder="Last Name"
-        value={lastName}
-        onChangeText={setLastName}
-        style={{ marginBottom: 10, borderWidth: 1, padding: 8 }}
-      />
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        style={{ marginBottom: 10, borderWidth: 1, padding: 8 }}
-      />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        autoCapitalize="none"
-        style={{ marginBottom: 10, borderWidth: 1, padding: 8 }}
-      />
+    <View style={styles.outerContainer}>
+      <View style={styles.overlay}>
+        <View style={styles.container}>
+          <TextInput
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={setLastName}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            autoCapitalize="none"
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+            autoCapitalize="none"
+            style={styles.input}
+          />
 
-      <Button title="Register" onPress={handleRegister} />
+          <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
+            <Text style={styles.loginButtonText}>Register</Text>
+          </TouchableOpacity>
 
-      {errorMsg ? <Text style={{ color: 'red', marginTop: 10 }}>{errorMsg}</Text> : null}
+          {errorMsg ? (
+            <Text style={styles.errorText}>{errorMsg}</Text>
+          ) : null}
 
-      <View style={{ marginTop: 20 }}>
-        <Button title="Go back to Login" onPress={() => router.back()} />
+          <TouchableOpacity onPress={() => router.back()} style={{ marginTop: 20 }}>
+            <Text style={styles.registerLink}>Go back to Login</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
