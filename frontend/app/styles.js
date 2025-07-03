@@ -92,8 +92,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Added styles for BioScreen layout:
-
   headerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -150,6 +148,32 @@ const styles = StyleSheet.create({
     color: 'blue',
     fontSize: 16,
   },
+  searchCard: {
+    marginBottom: 15,
+    padding: 15,
+    borderRadius: 15,
+    backgroundColor: '#f7f7f7',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  searchUserText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#333',
+    marginRight: 10,
+  },
+  searchMessageButton: {
+    backgroundColor: '#228B22',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+  },
+  searchMessageButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 14,
+  }
 });
 
 export default styles;

@@ -47,29 +47,16 @@ export default function SearchScreen() {
   return (
     <ScrollView contentContainerStyle={{ padding: 20 }}>
       <Text style={styles.screenTitle}>Search Users</Text>
+
       {users.map((u, idx) => (
-        <View
-          key={idx}
-          style={{
-            marginBottom: 15,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Text
-            style={[styles.staticText, { flex: 1, marginRight: 10 }]}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
+        <View key={idx} style={styles.searchCard}>
+          <Text style={styles.searchUserText} numberOfLines={2} ellipsizeMode="tail">
             {u.first_name} {u.last_name} | {u.graduation_year || '-'} | {u.major || '-'} |{' '}
             {(u.interests || []).join(', ') || '-'} | {(u.hobbies || []).join(', ') || '-'}
           </Text>
 
-          <TouchableOpacity
-            onPress={() => { }}
-          >
-            <Text>Message</Text>
+          <TouchableOpacity style={styles.searchMessageButton} onPress={() => {}}>
+            <Text style={styles.searchMessageButtonText}>Message</Text>
           </TouchableOpacity>
         </View>
       ))}
