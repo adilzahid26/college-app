@@ -9,11 +9,13 @@ import {
 } from 'react-native';
 import { useAuth } from '../_layout';
 import styles from '../styles';
+import { useRouter } from 'expo-router';
 
 export default function SearchScreen() {
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     if (authLoading) return;
@@ -55,7 +57,18 @@ export default function SearchScreen() {
             {(u.interests || []).join(', ') || '-'} | {(u.hobbies || []).join(', ') || '-'}
           </Text>
 
-          <TouchableOpacity style={styles.searchMessageButton} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.searchMessageButton}
+            onPress={() =>
+              router.push({
+                pathname: '../MessageScreen',
+                params: {
+                  userId: u.id,
+                  userName: `${u.first_name} ${u.last_name}`,
+                },
+              })
+            }
+          >
             <Text style={styles.searchMessageButtonText}>Message</Text>
           </TouchableOpacity>
         </View>
