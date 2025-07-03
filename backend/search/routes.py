@@ -2,7 +2,7 @@ import os
 import pymysql
 from pymysql.cursors import DictCursor
 from dotenv import load_dotenv
-from flask import request, jsonify, Blueprint
+from flask import request, jsonify, Blueprint, session
 from flask_cors import cross_origin
 
 load_dotenv()
@@ -21,14 +21,16 @@ def get_db_connection():
 @search_bp.route('', methods=['GET'])
 @cross_origin(supports_credentials=True)
 def search_users():
+    user_id = session.get('user_id')
     conn = get_db_connection()
     cursor = conn.cursor()
     try:
         cursor.execute("""
             SELECT id, first_name, last_name, major, graduation_year, interests, hobbies
             FROM user
+            WHERE id != %s
             ORDER BY last_name, first_name
-        """)
+        """, (user_id,))
         rows = cursor.fetchall()
 
         import json
