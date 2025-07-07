@@ -94,3 +94,26 @@ def save_bio():
     finally:
         cursor.close()
         conn.close()
+        
+@bio_bp.route('/public/<int:user_id>', methods=['GET'])
+@cross_origin(supports_credentials=True)
+def get_public_bio(user_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            "SELECT first_name, last_name, major, graduation_year, interests, hobbies FROM user WHERE id = %s",
+            (user_id,)
+        )
+        row = cursor.fetchone()
+        if not row:
+            return jsonify({"error": "User not found"}), 404
+
+        import json
+        row['interests'] = json.loads(row['interests']) if row['interests'] else []
+        row['hobbies'] = json.loads(row['hobbies']) if row['hobbies'] else []
+
+        return jsonify(row), 200
+    finally:
+        cursor.close()
+        conn.close()
